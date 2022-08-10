@@ -1,0 +1,95 @@
+---
+title: "Day 3 Activity Part 1- Conditionals and Loops"
+author: "Jillian Allison"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Conditional Statements
+
+Task 1 - simple if / else if example
+
+```{r}
+pm2_5 <- 48 
+
+if (pm2_5 < 100){
+  print("Low to moderate risk")
+} else if (pm2_5 >= 100 & pm2_5 < 150){
+  print("Unhealthy for sensitive groups")
+} else if (pm2_5 >= 150){
+  print("Health risk present")
+}
+```
+
+Task 2
+
+```{r}
+library(stringr)
+species <- "blue whale"
+
+if (str_detect(species, "whale")){
+  print("You've found a whale!")
+}
+```
+
+Task 3
+
+```{r}
+max_airtemp_c <- 24.1 
+
+if (max_airtemp_c > 27){
+  print("Temperature is too high!")
+}else
+  print("Temperature is okay.")
+```
+
+Task 4
+
+```{r}
+base_burrito <- 6.50 
+main_ingredient <- "chicken"
+
+if (main_ingredient == "veggie"){
+  price = base_burrito + 0
+} else if (main_ingredient == "chicken"){
+  price = base_burrito + 3.00 
+} else if (main_ingredient == "steak"){
+  price = base_burrito + 3.25
+}
+```
+
+### For Loops
+
+Task 5
+
+```{r}
+fish <- c(goldfish = 8, tetras = 10, guppies = 12, mollies = 23) 
+
+total_fish <- sum(fish)
+fish_proportions_df <- data.frame(fish, fish_proportion = vector(mode = "numeric", length = length(fish))) 
+
+for (i in seq_along(fish)) {
+  fish_prop <- fish[i]/sum(fish)
+  fish_proportions_df[i,2] <- fish_prop
+}
+fish_proportions_df
+```
+
+Task 6
+
+```{r}
+month.name
+
+
+for (i in seq_along(month.name)){
+  print(paste(month.name[i], "is month", i))
+}
+
+
+```
+
+### 

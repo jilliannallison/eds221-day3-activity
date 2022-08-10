@@ -1,0 +1,63 @@
+---
+title: "Day 3 Activity Part 2- Real Data"
+author: "Jillian Allison"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+### Part 2
+
+1.  Download the CSV containing the Toolik biogeochemistry data
+
+2.  Take a look at it - how are missing values stored? Keep that in mind.
+
+3.  Drop the CSV into your data folder of your project
+
+4.  Create a new R Markdown document, save in docs as toolik_chem.Rmd
+
+5.  Attach the tidyverse, here, and janitor packages in your setup code chunk
+
+6.  Read in the data as toolik_biochem. Remember, you'll want to specify here how NA values are stored. Pipe directly into janitor::clean_names() following your import code to get all column names into lower snake case.
+
+    ```{r}
+    toolik_biochem <- read_csv(here::here("data","2011_Kling_Akchem.csv"), na = ".") %>% 
+      clean_names() 
+    ```
+
+7.  Create a subset of the data that contains only observations from the "Toolik Inlet" site, and that only contains the variables (columns) for pH, dissolved organic carbon (DOC), and total dissolved nitrogen (TDN) (hint: see dplyr::select()). Store this subset as inlet_biochem. Make sure to LOOK AT the subset you've created.
+
+    ```{r}
+    inlet_biochem <- toolik_biochem %>% 
+      filter(site%in%c("Toolik Inlet", "Toolik inlet")) %>% 
+      select(ph = p_h, doc_u_m, tdn_u_m)
+    ```
+
+8.  Find the mean value of each column in inlet_biochem 3 different ways:
+
+    a) Write a for loop from scratch to calculate the mean for each
+
+    b) Use one other method (e.g. apply, across, or purrr::map_df) to find the mean for each column.
+
+    ```{r}
+    # manual for loop
+    means <- vector(mode = "numeric", length = length(seq_along(inlet_biochem)))
+
+    for (i in seq_along(inlet_biochem)){
+      col_mean <- mean(inlet_biochem[[i]], na.rm = TRUE)
+      means[i] <- col_mean 
+    }
+
+    # other method 
+    inlet_biochem_means <- inlet_biochem %>%
+      group_by() %>% 
+      summarize(across(where(is.numeric), 
+                       mean, 
+                       na.rm = TRUE))
+    ```
